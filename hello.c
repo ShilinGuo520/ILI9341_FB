@@ -357,7 +357,7 @@ static int ili9341_map(struct fb_info *info, struct vm_area_struct *vma)
 
 
 //帧缓冲操作函数
-static struct fb_ops clb210_lcdfb_ops =
+static struct fb_ops ili9341_lcdfb_ops =
 {
     .owner          = THIS_MODULE,
 	.fb_mmap		= ili9341_map,
@@ -366,7 +366,7 @@ static struct fb_ops clb210_lcdfb_ops =
     .fb_imageblit   = cfb_imageblit, //图像填充
 };
 
-static int __init leds_init(void)  
+static int __init ili9341_init(void)  
 {  
     int ret;  
 	int vmem_size;
@@ -401,7 +401,7 @@ static int __init leds_init(void)
     clb_fbinfo->var.activate = FB_ACTIVATE_NOW;
 
     /* 2.3 设置操作函数 */
-    clb_fbinfo->fbops = &clb210_lcdfb_ops;
+    clb_fbinfo->fbops = &ili9341_lcdfb_ops;
 
     /* 2.4 其他的设置 */
     /* 2.4.1 设置显存的大小 */
@@ -416,11 +416,11 @@ static int __init leds_init(void)
 	schedule_delayed_work(&defense_work, 1 * HZ);
 	ret = register_framebuffer(clb_fbinfo);
 
-    printk("ledsinit.\n");  
+    printk("ili9341init.\n");  
     return ret;  
 }  
   
-static void leds_exit(void)  
+static void ili9341_exit(void)  
 {  
 	unregister_framebuffer(clb_fbinfo);
 	ClearPageReserved(virt_to_page(buffer));
@@ -428,12 +428,12 @@ static void leds_exit(void)
 	cancel_delayed_work_sync(&defense_work);       
 
 	LED_L 
-    printk("leds_exit\n");  
+    printk("ili9341_exit\n");  
 	framebuffer_release(clb_fbinfo);
 }  
   
-module_init(leds_init);  
-module_exit(leds_exit);  
+module_init(ili9341_init);  
+module_exit(ili9341_exit);  
   
 MODULE_AUTHOR("Guo Shilin");
 MODULE_LICENSE("GPL");
