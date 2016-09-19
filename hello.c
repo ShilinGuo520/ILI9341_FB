@@ -276,7 +276,6 @@ void Lcd_Init(void)
     LCD_WR_DATA8(0x36); 
     LCD_WR_DATA8(0x0F); 
 
-
     LCD_WR_REG(0x11);    //Exit Sleep 
     delayms(120); 
 
@@ -303,7 +302,6 @@ void LCD_Clear(u16 Color)
 }
 /***********************************/
 
-
 static void tft_init(void)
 {
 	tft_gpio_init();
@@ -318,8 +316,7 @@ void update_tft(void)
 	u8 *fb_base ; 
 	u16 i,j;
 
-	fb_base = buffer;
-	
+	fb_base = buffer;	
 	Address_set(0,0,LCD_W-1,LCD_H-1);	
 	for(i=0; i<LCD_W; i++) {
 		for (j=0; j<LCD_H; j++) {
@@ -337,28 +334,9 @@ static DECLARE_DELAYED_WORK(defense_work, defense_work_handler);
 int status;
 static void defense_work_handler(struct work_struct *work)
 {
-//    printk(KERN_INFO "defense_work_handler function.\n");
 	update_tft();
-/*	if(status) {
-		LCD_Clear(0);
-		status = 0;
-	}
-	else {
-		LCD_Clear(0xffff);
-		status = 1;
-	}
-*/
 	schedule_delayed_work(&defense_work, (1 * HZ) / 20);
 }
-
-
-static int  clb210_lcdfb_setcolreg(unsigned regno,
-                   unsigned red, unsigned green, unsigned blue,
-                   unsigned transp, struct fb_info *info)
-{
-    return 0;
-}
-
 
 static int ili9341_map(struct fb_info *info, struct vm_area_struct *vma)
 {    
@@ -382,7 +360,6 @@ static int ili9341_map(struct fb_info *info, struct vm_area_struct *vma)
 static struct fb_ops clb210_lcdfb_ops =
 {
     .owner          = THIS_MODULE,
-    .fb_setcolreg   = clb210_lcdfb_setcolreg, //设置color寄存器和调色板
 	.fb_mmap		= ili9341_map,
 	.fb_fillrect    = cfb_fillrect,  //画一个矩形
     .fb_copyarea    = cfb_copyarea,  //数据拷贝
@@ -434,13 +411,9 @@ static int __init leds_init(void)
 	buffer = (unsigned char *)kmalloc(vmem_size,GFP_KERNEL); //vzalloc(vmem_size);
 	memset(buffer,0xf0,vmem_size);
     /* 2.4.3 设置显存的虚拟起始地址 */
-//    clb_fbinfo->screen_base = dma_alloc_writecombine(NULL,
-//            clb_fbinfo->fix.smem_len, (u32*)&(clb_fbinfo->fix.smem_start), GFP_KERNEL);
 
-	printk("debug:line:%s %d \n", __func__,  __LINE__);
 	tft_init();
 	schedule_delayed_work(&defense_work, 1 * HZ);
-//  ret =misc_register(&misc);
 	ret = register_framebuffer(clb_fbinfo);
 
     printk("ledsinit.\n");  
@@ -450,11 +423,8 @@ static int __init leds_init(void)
 static void leds_exit(void)  
 {  
 	unregister_framebuffer(clb_fbinfo);
-//	dma_free_writecombine(NULL,  clb_fbinfo->fix.smem_len, clb_fbinfo->screen_base, clb_fbinfo->fix.smem_start);
-
 	ClearPageReserved(virt_to_page(buffer));
 	kfree(buffer);
-//  misc_deregister(&misc);   
 	cancel_delayed_work_sync(&defense_work);       
 
 	LED_L 
