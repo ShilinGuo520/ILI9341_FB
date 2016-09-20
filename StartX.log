@@ -1,0 +1,10 @@
+[    69.300] (EE) FBDEV(0): FBIOPUT_VSCREENINFO succeeded but modified mode
+[    69.300] (EE) FBDEV(0): mode initialization failed
+[    69.300] (EE) Fatal server error:
+[    69.300] (EE) AddScreen/ScreenInit failed for driver 0
+[    69.300] (EE)
+[    69.300] (EE) Please consult the The X.Org Foundation support at http://wiki.x.org for help.
+[    69.300] (EE) Please also check the log file at "/var/log/Xorg.0.log" for additional information.
+[    69.300] (EE)
+[    69.306] (EE) Server terminated with error (1). Closing log file.
+
