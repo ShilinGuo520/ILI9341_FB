@@ -32,25 +32,10 @@
 #include <asm/uaccess.h>  
 #include <linux/ioport.h>  
 #include <linux/workqueue.h>
- 
 #include "bcm2835.h"  
-
-/*
- *  Raspberry Pi
- *  -  writing directly to the registers is 40-50% faster than
- *     optimized use of gpiolib
- */
-#define GPIOSET(no, ishigh)           \
-do {                                  \
-    if (ishigh)                   \
-        set |= (1 << (no));   \
-    else                          \
-        reset |= (1 << (no)); \
-} while (0)
 
 
 static struct fb_info *clb_fbinfo;
-int open_state = 0;         //文件打开状态
 
 static void gpio_reset(int num)
 {
@@ -104,8 +89,7 @@ u16 BACK_COLOR, POINT_COLOR;
 #define delayms msleep
 
 void LCD_Writ_Bus(char da)
-{	
-
+{
 	char bitdata = da;
 	int i;
 	for(i = 0; i < 8; i++) {
@@ -144,8 +128,9 @@ void LCD_WR_REG_DATA(int reg,int da)
 	LCD_WR_DATA(da);
 }
 
-void Address_set(unsigned int x1,unsigned int y1,unsigned int x2,unsigned int y2)
-{  
+void Address_set(	unsigned int x1, unsigned int y1, \
+					unsigned int x2, unsigned int y2)
+{
 	LCD_WR_REG(0x2a);
 	LCD_WR_DATA8(x1>>8);
 	LCD_WR_DATA8(x1);
@@ -224,8 +209,6 @@ void Lcd_Init(void)
     LCD_WR_DATA8(0x00);  
     LCD_WR_DATA8(0x18); 
 
- 
-
     LCD_WR_REG(0xB6);    // Display Function Control 
     LCD_WR_DATA8(0x08); 
     LCD_WR_DATA8(0x82);
@@ -234,12 +217,8 @@ void Lcd_Init(void)
 	LCD_WR_REG(0xF2);    // 3Gamma Function Disable 
     LCD_WR_DATA8(0x00); 
 
-	
-
 	LCD_WR_REG(0x26);    //Gamma curve selected 
     LCD_WR_DATA8(0x01); 
-
- 
 
 	LCD_WR_REG(0xE0);    //Set Gamma 
     LCD_WR_DATA8(0x0F); 
@@ -308,15 +287,13 @@ static void tft_init(void)
 	Lcd_Init();
 }
 
-static unsigned char *buffer;
-
-
 void update_tft(void)
 {
 	u8 *fb_base ; 
 	u16 i,j;
 
-	fb_base = buffer;	
+	fb_base = clb_fbinfo->screen_base;
+
 	Address_set(0,0,LCD_W-1,LCD_H-1);	
 	for(i=0; i<LCD_W; i++) {
 		for (j=0; j<LCD_H; j++) {
@@ -331,7 +308,6 @@ void update_tft(void)
 static void defense_work_handler(struct work_struct *work);
 static DECLARE_DELAYED_WORK(defense_work, defense_work_handler);
 
-int status;
 static void defense_work_handler(struct work_struct *work)
 {
 	update_tft();
@@ -346,7 +322,7 @@ static int ili9341_map(struct fb_info *info, struct vm_area_struct *vma)
 
 	printk("func %s line %d \n", __func__, __LINE__);
     //得到物理地址
-    page = virt_to_phys(buffer);    
+    page = info->fix.smem_start;
     //将用户空间的一个vma虚拟内存区映射到以page开始的一段连续物理页面上
     if(remap_pfn_range(vma,start,page>>PAGE_SHIFT,size,PAGE_SHARED)) { //第三个参数是页帧号，由物理地址右移PAGE_SHIFT得到
 		printk("error:func %s", __func__);
@@ -369,7 +345,7 @@ static struct fb_ops ili9341_lcdfb_ops =
 static int __init ili9341_init(void)  
 {  
     int ret;  
-	int vmem_size;
+	int mem_size;
 	/* 1.分配一个fb_info */
     clb_fbinfo = framebuffer_alloc(0 , NULL);
 
@@ -387,8 +363,7 @@ static int __init ili9341_init(void)
     clb_fbinfo->var.xres_virtual   = 240;
     clb_fbinfo->var.yres_virtual   = 320;
     clb_fbinfo->var.bits_per_pixel = 16;
-
-    /*RGB:888*/
+/*
     clb_fbinfo->var.red.offset = 16;
     clb_fbinfo->var.red.length = 8;
 
@@ -397,7 +372,7 @@ static int __init ili9341_init(void)
 
     clb_fbinfo->var.blue.offset = 0;
     clb_fbinfo->var.blue.length = 8;
-
+*/
     clb_fbinfo->var.activate = FB_ACTIVATE_NOW;
 
     /* 2.3 设置操作函数 */
@@ -407,9 +382,11 @@ static int __init ili9341_init(void)
     /* 2.4.1 设置显存的大小 */
     clb_fbinfo->screen_size =  320 * 240 * 2;
 
-	vmem_size = 320 * 240 * 2 ;
-	buffer = (unsigned char *)kmalloc(vmem_size,GFP_KERNEL); //vzalloc(vmem_size);
-	memset(buffer,0xf0,vmem_size);
+	mem_size = 320 * 240 * 2 ;
+	clb_fbinfo->screen_base = (unsigned char *)kmalloc(mem_size,GFP_KERNEL);
+	clb_fbinfo->fix.smem_start = virt_to_phys(clb_fbinfo->screen_base);
+	memset(clb_fbinfo->screen_base,0xf0,mem_size);
+
     /* 2.4.3 设置显存的虚拟起始地址 */
 
 	tft_init();
@@ -422,9 +399,9 @@ static int __init ili9341_init(void)
   
 static void ili9341_exit(void)  
 {  
+	ClearPageReserved(virt_to_page(clb_fbinfo->screen_base));
+	kfree(clb_fbinfo->screen_base);
 	unregister_framebuffer(clb_fbinfo);
-	ClearPageReserved(virt_to_page(buffer));
-	kfree(buffer);
 	cancel_delayed_work_sync(&defense_work);       
 
 	LED_L 
