@@ -1,0 +1,111 @@
+[  4712.087] 
+X.Org X Server 1.17.2
+Release Date: 2015-06-16
+[  4712.087] X Protocol Version 11, Revision 0
+[  4712.087] Build Operating System: Linux 3.8.11-2-ARCH armv7l Raspbian
+[  4712.087] Current Operating System: Linux raspberrypi 4.4.21-v7+ #3 SMP Sat Sep 17 15:50:08 UTC 2016 armv7l
+[  4712.087] Kernel command line: 8250.nr_uarts=0 dma.dmachans=0x7f35 bcm2708_fb.fbwidth=656 bcm2708_fb.fbheight=416 bcm2709.boardrev=0xa02082 bcm2709.serial=0xbb75610f smsc95xx.macaddr=B8:27:EB:75:61:0F bcm2708_fb.fbswap=1 bcm2709.uart_clock=48000000 vc_mem.mem_base=0x3dc00000 vc_mem.mem_size=0x3f000000  dwc_otg.lpm_enable=0 console=ttyS0,115200 console=tty1 root=/dev/mmcblk0p2 rootfstype=ext4 elevator=deadline fsck.repair=yes rootwait
+[  4712.088] Build Date: 11 January 2016  01:32:44PM
+[  4712.088] xorg-server 2:1.17.2-1+rpi1 (http://www.debian.org/support) 
+[  4712.088] Current version of pixman: 0.33.3
+[  4712.088] 	Before reporting problems, check http://wiki.x.org
+	to make sure that you have the latest version.
+[  4712.088] Markers: (--) probed, (**) from config file, (==) default setting,
+	(++) from command line, (!!) notice, (II) informational,
+	(WW) warning, (EE) error, (NI) not implemented, (??) unknown.
+[  4712.088] (==) Log file: "/var/log/Xorg.0.log", Time: Wed Sep 21 15:33:39 2016
+[  4712.088] (==) Using system config directory "/usr/share/X11/xorg.conf.d"
+[  4712.089] (==) No Layout section.  Using the first Screen section.
+[  4712.089] (**) |-->Screen "Screen0" (0)
+[  4712.089] (**) |   |-->Monitor "Monitor0"
+[  4712.089] (**) |   |-->Device "Card0"
+[  4712.090] (==) Automatically adding devices
+[  4712.090] (==) Automatically enabling devices
+[  4712.090] (==) Automatically adding GPU devices
+[  4712.090] (WW) The directory "/usr/share/fonts/X11/misc" does not exist.
+[  4712.090] 	Entry deleted from font path.
+[  4712.090] (WW) The directory "/usr/share/fonts/X11/cyrillic" does not exist.
+[  4712.090] 	Entry deleted from font path.
+[  4712.090] (WW) The directory "/usr/share/fonts/X11/75dpi/" does not exist.
+[  4712.090] 	Entry deleted from font path.
+[  4712.090] (WW) The directory "/usr/share/fonts/X11/75dpi" does not exist.
+[  4712.090] 	Entry deleted from font path.
+[  4712.090] (==) FontPath set to:
+	/usr/share/fonts/X11/100dpi/:unscaled,
+	/usr/share/fonts/X11/Type1,
+	/usr/share/fonts/X11/100dpi,
+	built-ins
+[  4712.090] (==) ModulePath set to "/usr/lib/xorg/modules"
+[  4712.090] (II) The server relies on udev to provide the list of input devices.
+	If no devices become available, reconfigure udev or disable AutoAddDevices.
+[  4712.090] (II) Loader magic: 0x54d21f00
+[  4712.090] (II) Module ABI versions:
+[  4712.090] 	X.Org ANSI C Emulation: 0.4
+[  4712.090] 	X.Org Video Driver: 19.0
+[  4712.090] 	X.Org XInput driver : 21.0
+[  4712.090] 	X.Org Server Extension : 9.0
+[  4712.090] (II) no primary bus or device found
+[  4712.090] (II) LoadModule: "glx"
+[  4712.091] (II) Loading /usr/lib/xorg/modules/extensions/libglx.so
+[  4712.099] (II) Module glx: vendor="X.Org Foundation"
+[  4712.099] 	compiled for 1.17.2, module version = 1.0.0
+[  4712.100] 	ABI class: X.Org Server Extension, version 9.0
+[  4712.100] (==) AIGLX enabled
+[  4712.100] (II) LoadModule: "fbdev"
+[  4712.100] (II) Loading /usr/lib/xorg/modules/drivers/fbdev_drv.so
+[  4712.100] (II) Module fbdev: vendor="X.Org Foundation"
+[  4712.100] 	compiled for 1.17.2, module version = 0.4.4
+[  4712.100] 	Module class: X.Org Video Driver
+[  4712.100] 	ABI class: X.Org Video Driver, version 19.0
+[  4712.100] (II) FBDEV: driver for framebuffer: fbdev
+[  4712.101] (--) using VT number 2
+
+[  4712.103] (WW) Falling back to old probe method for fbdev
+[  4712.103] (II) Loading sub module "fbdevhw"
+[  4712.103] (II) LoadModule: "fbdevhw"
+[  4712.104] (II) Loading /usr/lib/xorg/modules/libfbdevhw.so
+[  4712.104] (II) Module fbdevhw: vendor="X.Org Foundation"
+[  4712.104] 	compiled for 1.17.2, module version = 0.0.2
+[  4712.104] 	ABI class: X.Org Video Driver, version 19.0
+[  4712.104] (II) FBDEV(0): using /dev/fb1
+[  4712.104] (WW) VGA arbiter: cannot open kernel arbiter, no multi-card support
+[  4712.104] (II) FBDEV(0): Creating default Display subsection in Screen section
+	"Screen0" for depth/fbbpp 16/16
+[  4712.104] (--) FBDEV(0): Depth 16, (==) framebuffer bpp 16
+[  4712.104] (==) FBDEV(0): RGB weight 565
+[  4712.104] (==) FBDEV(0): Default visual is TrueColor
+[  4712.104] (==) FBDEV(0): Using gamma correction (1.0, 1.0, 1.0)
+[  4712.104] (II) FBDEV(0): hardware: ili9341_lcd (video memory: 150kB)
+[  4712.104] (**) FBDEV(0): Option "fbdev" "/dev/fb1"
+[  4712.104] (II) FBDEV(0): checking modes against framebuffer device...
+[  4712.104] (II) FBDEV(0): checking modes against monitor...
+[  4712.105] (--) FBDEV(0): Virtual size is 240x320 (pitch 240)
+[  4712.105] (**) FBDEV(0):  Built-in mode "current"
+[  4712.105] (**) FBDEV(0): Display dimensions: (240, 320) mm
+[  4712.105] (**) FBDEV(0): DPI set to (25, 25)
+[  4712.105] (II) Loading sub module "fb"
+[  4712.105] (II) LoadModule: "fb"
+[  4712.105] (II) Loading /usr/lib/xorg/modules/libfb.so
+[  4712.118] (II) Module fb: vendor="X.Org Foundation"
+[  4712.118] 	compiled for 1.17.2, module version = 1.0.0
+[  4712.118] 	ABI class: X.Org ANSI C Emulation, version 0.4
+[  4712.118] (**) FBDEV(0): using shadow framebuffer
+[  4712.118] (II) Loading sub module "shadow"
+[  4712.118] (II) LoadModule: "shadow"
+[  4712.118] (II) Loading /usr/lib/xorg/modules/libshadow.so
+[  4712.129] (II) Module shadow: vendor="X.Org Foundation"
+[  4712.129] 	compiled for 1.17.2, module version = 1.1.0
+[  4712.129] 	ABI class: X.Org ANSI C Emulation, version 0.4
+[  4712.130] (EE) FBDEV(0): FBIOPUT_VSCREENINFO succeeded but modified mode
+[  4712.130] (EE) FBDEV(0): mode initialization failed
+[  4712.130] (EE) 
+Fatal server error:
+[  4712.130] (EE) AddScreen/ScreenInit failed for driver 0
+[  4712.130] (EE) 
+[  4712.130] (EE) 
+Please consult the The X.Org Foundation support 
+	 at http://wiki.x.org
+ for help. 
+[  4712.130] (EE) Please also check the log file at "/var/log/Xorg.0.log" for additional information.
+[  4712.130] (EE) 
+[  4712.135] (EE) Server terminated with error (1). Closing log file.
