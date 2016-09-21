@@ -297,9 +297,9 @@ void update_tft(void)
 	Address_set(0,0,LCD_W-1,LCD_H-1);	
 	for(i=0; i<LCD_W; i++) {
 		for (j=0; j<LCD_H; j++) {
+			LCD_WR_DATA8(*(fb_base + 1));
 			LCD_WR_DATA8(*fb_base);
 			fb_base++;
-			LCD_WR_DATA8(*fb_base);
 			fb_base++;
 		}
 	}
@@ -330,7 +330,6 @@ static int ili9341_map(struct fb_info *info, struct vm_area_struct *vma)
 	}
     return 0;
 }
-
 
 //帧缓冲操作函数
 static struct fb_ops ili9341_lcdfb_ops =
@@ -363,16 +362,18 @@ static int __init ili9341_init(void)
     clb_fbinfo->var.xres_virtual   = 240;
     clb_fbinfo->var.yres_virtual   = 320;
     clb_fbinfo->var.bits_per_pixel = 16;
-/*
-    clb_fbinfo->var.red.offset = 16;
-    clb_fbinfo->var.red.length = 8;
 
-    clb_fbinfo->var.green.offset = 8;
-    clb_fbinfo->var.green.length = 8;
+    clb_fbinfo->var.red.offset = 11;
+    clb_fbinfo->var.red.length = 5;
+
+    clb_fbinfo->var.green.offset = 5;
+    clb_fbinfo->var.green.length = 6;
 
     clb_fbinfo->var.blue.offset = 0;
-    clb_fbinfo->var.blue.length = 8;
-*/
+    clb_fbinfo->var.blue.length = 5;
+
+	clb_fbinfo->flags = FBINFO_FLAG_DEFAULT | FBINFO_VIRTFB;
+
     clb_fbinfo->var.activate = FB_ACTIVATE_NOW;
 
     /* 2.3 设置操作函数 */
