@@ -83,8 +83,8 @@ static void tft_gpio_init(void)
 /***********************************/
 u16 BACK_COLOR, POINT_COLOR;
 
-#define LCD_W 240
-#define LCD_H 320
+#define LCD_W 320
+#define LCD_H 240
 
 #define delayms msleep
 
@@ -200,7 +200,7 @@ void Lcd_Init(void)
     LCD_WR_DATA8(0x86);  //--
 
     LCD_WR_REG(0x36);    // Memory Access Control 
-    LCD_WR_DATA8(0x48); //	   //48 68ÊúÆÁ//28 E8 ºáÆÁ
+    LCD_WR_DATA8(0x28); //	   //48 68ÊúÆÁ//28 E8 ºáÆÁ
 
     LCD_WR_REG(0x3A);    
     LCD_WR_DATA8(0x55); 
@@ -354,13 +354,13 @@ static int __init ili9341_init(void)
     clb_fbinfo->fix.smem_len = 320 * 240 * 2;
     clb_fbinfo->fix.type = FB_TYPE_PACKED_PIXELS;
     clb_fbinfo->fix.visual = FB_VISUAL_TRUECOLOR;
-    clb_fbinfo->fix.line_length = 240 * 2;
+    clb_fbinfo->fix.line_length = 320 * 2;
 
     /* 2.2 设置可变的参数 */
-    clb_fbinfo->var.xres = 240;
-    clb_fbinfo->var.yres = 320;
-    clb_fbinfo->var.xres_virtual   = 240;
-    clb_fbinfo->var.yres_virtual   = 320;
+    clb_fbinfo->var.xres = 320;
+    clb_fbinfo->var.yres = 240;
+    clb_fbinfo->var.xres_virtual   = 320;
+    clb_fbinfo->var.yres_virtual   = 240;
     clb_fbinfo->var.bits_per_pixel = 16;
 
     clb_fbinfo->var.red.offset = 11;
